@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script imports all wikimedia files for 2013-2014
+# This script downloads, unzips, and imports into mongodb all wikimedia project pagecount files 
 #
 #
 

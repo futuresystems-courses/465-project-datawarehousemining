@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script downloads, unzips, and imports into mongodb all wikimedia project pagecount files 
+# This script downloads, unzips, transforms, and imports into mongodb all wikimedia project pagecount files 
 #
 #
 

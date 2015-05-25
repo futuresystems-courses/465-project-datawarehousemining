@@ -36,9 +36,3 @@ month="05"
   done
   echo "cleaning up hash file"
   rm $year$month-hash.txt
-
-
-
-
-
-

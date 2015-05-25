@@ -1,12 +1,10 @@
 #!/bin/bash
-# This script downloads, unzips, transforms, and imports into mongodb all wikimedia project pagecount files 
+# This script imports all wikimedia files for May 2014
 #
 #
 
 year="2014"
-
-for month in {01..12}
-do
+month="05"
   echo "importing hash file for ${year} - ${month} used for checking files arrive intact"
   wget -O $year$month-hash.txt "https://dumps.wikimedia.org/other/pagecounts-raw/${year}/${year}-${month}/md5sums.txt"
   for day in {01..31}
@@ -25,7 +23,7 @@ do
             echo "convert to UTF-8"
             iconv -f ISO-8859-1 -t UTF-8 $year$month$day-$hour.csv >$year$month$day-$hour-UT8.csv
             echo "importing data into mongodb"
-            mongoimport --db wikimedia_project --collection pagecounts --type csv --fieldFile pagecount_headers.txt --file $year$month$day-$hour-UT8.csv
+            mongoimport --db wikimedia_project --collection pagecounts_May14 --type csv --fieldFile pagecount_headers.txt --file $year$month$day-$hour-UT8.csv
             echo "cleaning up files"
             rm $year$month$day-$hour*
             break
@@ -38,7 +36,7 @@ do
   done
   echo "cleaning up hash file"
   rm $year$month-hash.txt
-done
+
 
 
 

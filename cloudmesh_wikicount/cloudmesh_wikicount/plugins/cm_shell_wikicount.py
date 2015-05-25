@@ -23,6 +23,7 @@ class cm_shell_wikicount:
                                            [--flavor=S]
                                            [--image=S]
               wikicount decomission_cluster NAME
+              wikicount setup_environment
 
           Arguments:
             NAME      Name of the wikicount cluster group
@@ -47,6 +48,9 @@ class cm_shell_wikicount:
             Console.ok("I want to decomission a cluster")
             name = arguments['NAME']
             command_wikicount.decomission_cluster(name)
+        elif arguments['setup_environment']:
+            Console.ok("Initializing environment")
+            command_wikicount.setup_environment()
         elif arguments["NAME"] is None:
             Console.error("Please specify a name for the cluster")
         else:

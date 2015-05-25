@@ -23,11 +23,15 @@ class command_wikicount(object):
         print(ips)
         
         print("writing ip addreses to inventory.txt file")  
-        with open('inventory.txt', 'w') as f:
+        with open('./ansible/inventory.txt', 'w') as f:
             f.write("[%s]\n" % "ansible-wikicount")
             for ip in ips:
                 print ip
                 f.write("%s\n" % str(ip))        
+
+        print("enable root access on all machines in cluster using ansible")
+        subprocess.call("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/enable-root-access.yaml", shell=True)
+
         if (exitCode == 0):
             return output
         else:
@@ -37,10 +41,20 @@ class command_wikicount(object):
     def decomission_cluster(cls, name):
         subprocess.call("cm cluster remove %s"% (name), shell=True)
         print("removing inventory.txt file")
-        subprocess.call("rm inventory.txt", shell=True)
+        subprocess.call("rm ./ansible/inventory.txt", shell=True)
+
     @classmethod
     def setup_environment(cls):
         print("setting up SSH to access multiple machines")
         os.system("eval $(ssh-agent -s);ssh-add ~/.ssh/id_rsa")
         return 1
 
+    @classmethod
+    def install_mongodb(cls):
+        print("activating virtual env for ansible")
+        os.system("mkdir -p ~/venv/ansible", shell=True)
+        os.system("virtualenv ~/venv/ansible", shell=True)
+        os.system("source ~/venv/ansible/bin/activate", shell=True)
+        #subprocess.call("mkdir -p ~/venv/ansible;virtualenv ~/venv/ansible;source ~/venv/ansible/bin/activate", shell=True)
+        print("test done")
+        return 1

@@ -24,6 +24,7 @@ class cm_shell_wikicount:
                                            [--image=S]
               wikicount decomission_cluster NAME
               wikicount setup_environment
+              wikicount install_mongodb
 
           Arguments:
             NAME      Name of the wikicount cluster group
@@ -51,6 +52,9 @@ class cm_shell_wikicount:
         elif arguments['setup_environment']:
             Console.ok("Initializing environment")
             command_wikicount.setup_environment()
+        elif arguments['install_mongodb']: 
+            Console.ok("Installing mongodb")
+            command_wikicount.install_mongodb()
         elif arguments["NAME"] is None:
             Console.error("Please specify a name for the cluster")
         else:

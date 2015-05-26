@@ -51,10 +51,5 @@ class command_wikicount(object):
 
     @classmethod
     def install_mongodb(cls):
-        print("activating virtual env for ansible")
-        os.system("mkdir -p ~/venv/ansible", shell=True)
-        os.system("virtualenv ~/venv/ansible", shell=True)
-        os.system("source ~/venv/ansible/bin/activate", shell=True)
-        #subprocess.call("mkdir -p ~/venv/ansible;virtualenv ~/venv/ansible;source ~/venv/ansible/bin/activate", shell=True)
-        print("test done")
+        subprocess.call("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/mongodb.yaml", shell=True)
         return 1

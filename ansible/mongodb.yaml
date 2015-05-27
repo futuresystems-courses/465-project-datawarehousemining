@@ -6,12 +6,19 @@
     apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=7F0CEB10 state=present
   - name: Add MongoDB repository
     apt_repository: repo='deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' state=present
-  - name: Creates directory
-    file: path=/data/configdb state=directory
   - name: install mongodb
     apt: pkg=mongodb-org state=latest update_cache=yes
-    notify:
-    - start mongodb
-  handlers:
-    - name: start mongodb
-      service: name=mongod state=started
+
+
+- hosts: config-servers
+  remote_user: root
+  tasks:
+  - name: Creates directory for config server
+    file: path=/data/configdb state=directory
+  - name: start config servers
+    shell: sudo mongod --configsvr --dbpath /data/configdb --port 27019 &
+#    notify:
+#    - start mongodb
+#  handlers:
+#    - name: start mongodb
+#      service: name=mongod state=started

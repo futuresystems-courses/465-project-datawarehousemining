@@ -29,6 +29,12 @@ class command_wikicount(object):
                 print ip
                 f.write("%s\n" % str(ip))        
 
+        print("specifying config servers in inventory.txt file")
+        with open("./ansible/inventory.txt", "a") as f:
+            f.write("\n[config-servers]\n")
+            for ip in ips[:3]:
+                f.write("%s\n" % str(ip))
+
         print("enable root access on all machines in cluster using ansible")
         subprocess.call("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/enable-root-access.yaml", shell=True)
 

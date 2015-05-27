@@ -1,5 +1,12 @@
 #commands used to Chef installation and configuration required for deploying Hadoop
 
+module load openstack
+source ~/.cloudmesh/clouds/india/juno/openrc.sh
+export OS_TENANT_NAME=fg465b
+source ENV/bin/activate
+ssh ubuntu@10.23.0.209
+
+
 sudo su -
 apt-get update
 cd /home/ubuntu
@@ -25,3 +32,33 @@ tar -zxf hadoop*
 tar -zxf sysctl*
 tar -zxf ohai*
 rm *.tar.gz
+
+#In /home/ubuntu/chef-repo/roles create java.rb
+cd /home/ubuntu/chef-repo/roles
+nano java.rb
+#contents are uploaded in github
+
+#In /home/ubuntu/chef-repo/roles create hadoop.rb
+nano hadoop.rb
+#contents are uploaded in github
+
+#In /home/ubuntu/chef-repo create solo.rb
+cd ..
+nano solo.rb
+#contents are uploaded in github
+
+#In /home/ubuntu/chef-repo create solo.json
+nano solo.json
+#contents are uploaded in github
+
+chef-solo -j /home/ubuntu/chef-repo/solo.json -c /home/ubuntu/chef-repo/solo.rb
+
+#initiate all node
+#Data node needs to be start first if it is single node cluster
+
+service hadoop-hdfs-namenode start
+/usr/lib/hadoop/libexec/init-hdfs.sh
+
+service hadoop-hdfs-datanode start
+service hadoop-yarn-resourcemanager start
+service hadoop-yarn-nodemanager start

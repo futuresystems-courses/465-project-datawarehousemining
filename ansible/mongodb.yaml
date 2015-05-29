@@ -17,6 +17,19 @@
     file: path=/data/configdb state=directory
   - name: start config servers
     shell: sudo mongod --configsvr --dbpath /data/configdb --port 27019 &
+    async: 30
+    poll: 0
+
+- hosts: ansible-wikicount
+  remote_user: root
+  tasks:
+  - name: copy hostnames.txt over to remote VMs
+    copy: src=./hostnames.txt dest=~/hostnames.txt owner=ubuntu
+  - name: test variable replacement
+    shell: echo "$(< hostnames.txt)"
+  - name: Starts mongo instances on all nodes in the cluster
+    shell: mongos --configdb ~/"$(< hostnames.txt)"
+
 #    notify:
 #    - start mongodb
 #  handlers:

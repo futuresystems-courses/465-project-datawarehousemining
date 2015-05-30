@@ -1,6 +1,7 @@
 #!/bin/bash
 #commands used to Chef installation and configuration required for deploying Hadoop
 
+VAR1=$1
 apt-get update
 cd /home/ubuntu
 curl -L https://www.opscode.com/chef/install.sh | bash
@@ -28,37 +29,37 @@ rm *.tar.gz
 
 #In /home/ubuntu/chef-repo/roles create java.rb -> contents are uploaded in github
 cd /home/ubuntu/chef-repo/roles
-echo "name "java"
-description "Install Oracle Java"
+echo "name \"java\"
+description \"Install Oracle Java\"
 default_attributes(
-  "java" => {
-    "install_flavor" => "oracle",
-    "jdk_version" => "6",
-    "set_etc_environment" => true,
-    "oracle" => {
-      "accept_oracle_download_terms" => true
+  \"java\" => {
+    \"install_flavor\" => \"oracle\",
+    \"jdk_version\" => \"6\",
+    \"set_etc_environment\" => true,
+    \"oracle\" => {
+     \"accept_oracle_download_terms\" => true
     }
   }
 )
 run_list(
-  "recipe[java]"
+ \"recipe[java]\"
 )" > java.rb
 
-echo "name "hadoop"
-description "set Hadoop attributes"
+echo "name \"hadoop\"
+description \"set Hadoop attributes\"
 default_attributes(
-  "hadoop" => {
-    "distribution" => "bigtop",
-    "core_site" => {
-      "fs.defaultFS" => "hdfs://saksgupt-001"
+  \"hadoop\" => {
+    \"distribution\" => \"bigtop\",
+    \"core_site\" => {
+      \"fs.defaultFS\" => \"hdfs://$VAR1\"
     },
-    "yarn_site" => {
-      "yarn.resourcemanager.hostname" =>"saksgupt-001"
+    \"yarn_site\" => {
+      \"yarn.resourcemanager.hostname\" =>\"$VAR1\"
     }
   }
 )
 run_list(
-  "recipe[hadoop]"
+ \"recipe[hadoop]\"
 )
 " > hadoop.rb
 
@@ -76,7 +77,7 @@ echo "{
    \"recipe[hadoop::hadoop_yarn_nodemanager]\", \"recipe[hadoop::hadoop_yarn_resourcemanager]\",  \"recipe[hadoop::hadoop_hdfs_datanode]\" ]
 }">solo.json
 
-echo "127.0.0.1  saksgupt-001">> /etc/hosts
+echo "127.0.0.1  $VAR1">> /etc/hosts
 
 #install
 chef-solo -j /home/ubuntu/chef-repo/solo.json -c /home/ubuntu/chef-repo/solo.rb
@@ -94,4 +95,4 @@ service hadoop-hdfs-namenode start
 service hadoop-yarn-resourcemanager start
 service hadoop-yarn-nodemanager start
 
-echo jps
+jps

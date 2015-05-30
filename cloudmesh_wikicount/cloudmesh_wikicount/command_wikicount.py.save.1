@@ -34,21 +34,15 @@ class command_wikicount(object):
                 f.write("%s\n" % str(ip))
 
         print("getting hostnames and writing to hostnames.txt file")
-        hostnames = re.findall( '([\w]+)\s[\w.]+\W\s10.23.\d.\d{1,3}', output)
-        print(hostnames)
-        configdb_string= hostnames[0] + "-i:27019,"+ hostnames[1] + "-i:27019," + hostnames[2] + "-i:27019"
-        print(configdb_string)
-        os.system("configdb_string=%s" % str(configdb_string))
-        os.system("echo $configdb_string")
+        hostname_lines = re.findall( "([\w]+)\s[\w]+,\s10.23.\d.\d{1,3}", output)
+        print(hostname_lines)
         with open('./ansible/hostnames.txt', 'w') as f:
-            for hostname in hostnames[:3]:
+            for hostname_line in hostname_lines:
+                print(hostname_line)
+                hostname = hostname_line.split(None, 1)[0]
                 print(hostname)
                 f.write("%s" % hostname)
-                #append port
-                if hostname == hostnames[2]:
-                    f.write("-i:27019")
-                else:
-                    f.write("-i:27019,")
+        
 
         print("specifying config servers in inventory.txt file")
         with open("./ansible/inventory.txt", "a") as f:

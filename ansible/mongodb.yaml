@@ -9,14 +9,28 @@
   - name: install mongodb
     apt: pkg=mongodb-org state=latest update_cache=yes
 
-
 - hosts: config-servers
   remote_user: root
   tasks:
   - name: Creates directory for config server
     file: path=/data/configdb state=directory
-  - name: start config servers
-    shell: sudo mongod --configsvr --dbpath /data/configdb --port 27019 &
+  - name: start mongodb config servers
+    service: name=mongod arguments="--configsvr --dbpath /data/configdb --port 27019" state=started
+#  - name: start config servers
+#    shell: sudo mongod --configsvr --dbpath /data/configdb --port 27019 &
+#    async: 30
+#    poll: 0
+
+- hosts: ansible-wikicount
+  remote_user: root
+  tasks:
+  - name: copy hostnames.txt over to remote VMs
+    copy: src= hostnames.txt dest=/home/ubuntu/hostnames.txt owner=ubuntu
+  - name: test variable replacement
+    shell: echo "$(< hostnames.txt)"
+  - name: Starts mongo instances on all nodes in the cluster
+    shell: mongos --configdb ~/"$(< /home/ubuntu/hostnames.txt)"
+
 #    notify:
 #    - start mongodb
 #  handlers:

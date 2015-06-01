@@ -4,8 +4,12 @@
   tasks:
   - name: copy files to remote host
     copy: src=../Hadoop/ dest=/home/ubuntu/Hadoop
-  - name: run hadoop deployment script on remote host
-    script: ../Hadoop/Hadoop_Deployment_Automation.sh {{ ansible_hostname }}
+  - name: make copies of key files in home directory
+    shell: cp ./Hadoop/Wiki_Data_Analysis_Automation.sh /home/ubuntu chdir=/home/ubuntu/
+  - name: make copies of key files in home directory
+    shell: cp ./Hadoop/WikiDataAnalysis.java /home/ubuntu chdir=/home/ubuntu/
+#  - name: run hadoop deployment script on remote host
+#    script: ../Hadoop/Hadoop_Deployment_Automation.sh {{ ansible_hostname }}
    
 
 #  - name: test

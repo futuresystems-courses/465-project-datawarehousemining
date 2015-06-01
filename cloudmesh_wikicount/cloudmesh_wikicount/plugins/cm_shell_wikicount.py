@@ -23,7 +23,7 @@ class cm_shell_wikicount:
                                            [--flavor=S]
                                            [--image=S]
               wikicount decomission_cluster NAME
-              wikicount setup_environment
+              wikicount install
               wikicount install_mongodb
 
           Arguments:
@@ -49,9 +49,9 @@ class cm_shell_wikicount:
             Console.ok("I want to decomission a cluster")
             name = arguments['NAME']
             command_wikicount.decomission_cluster(name)
-        elif arguments['setup_environment']:
+        elif arguments['install']:
             Console.ok("Initializing environment")
-            command_wikicount.setup_environment()
+            command_wikicount.install()
         elif arguments['install_mongodb']: 
             Console.ok("Installing mongodb")
             command_wikicount.install_mongodb()

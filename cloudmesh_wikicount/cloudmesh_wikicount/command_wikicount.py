@@ -3,6 +3,7 @@ from pprint import pprint
 import re
 import os
 import socket
+import io
 
 
 class command_wikicount(object):
@@ -66,6 +67,9 @@ class command_wikicount(object):
             f.write("\n[hadoop]\n")
             f.write("%s\n" % ips[0])
 
+        with open("./ansible/hadoop-ip.txt", 'w') as f:
+            f.write("%s" % ips[0])
+
         print("enable root access on all machines in cluster using ansible")
         subprocess.call("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/enable-root-access.yaml", shell=True)
 
@@ -81,16 +85,31 @@ class command_wikicount(object):
         subprocess.call("rm ./ansible/inventory.txt", shell=True)
 
     @classmethod
-    def setup_environment(cls):
+    def install(cls):
         print("setting up SSH to access multiple machines")
-        os.system("eval $(ssh-agent -s")
+        os.system("eval $(ssh-agent -s)")
         os.system("ssh-add ~/.ssh/id_rsa")
-        os.system("debug off")
-        os.system("loglevel error")
+        os.system("cm wikicount build_cluster test")
+        command_wikicount.install_mongodb()
+        os.system("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/hadoop.yaml")
+        with open('ansible/hadoop-ip.txt', 'r') as content_file:
+            hadoop_ip = content_file.read()
+        with open('ansible/hadoop_hostname.txt', 'r') as content_file:
+            hadoop_hostname= content_file.read()
+        hadoop_command_line="ssh ubuntu@" + hadoop_ip + " bash -s < Hadoop/Hadoop_Deployment_Automation.sh " + hadoop_hostname
+        print(hadoop_command_line)
+        os.system(hadoop_command_line)
+        print("running map reduce test case")
+        hadoop_command_line="ssh ubuntu@" + hadoop_ip + " bash -s < Hadoop/Wiki_Data_Analysis_Automation.sh"
+        os.system(hadoop_command_line)
         return 1
 
     @classmethod
     def install_mongodb(cls):
         subprocess.call("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/mongodb.yaml", shell=True)
-        os.system("ssh ubuntu@10.23.1.214 'bash -s' < bin/import_wiki_pagecounts_May2014_1.sh")
+        with open('ansible/hadoop-ip.txt', 'r') as content_file:
+            hadoop_ip = content_file.read()
+        hadoop_command_line="ssh ubuntu@" + hadoop_ip + " bash -s < bin/import_wiki_pagecounts_May2014_1.sh"
+        os.system(hadoop_command_line)
         return 1
+

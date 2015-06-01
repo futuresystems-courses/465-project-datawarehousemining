@@ -9,7 +9,7 @@ month="05"
   wget -O $year$month-hash.txt "https://dumps.wikimedia.org/other/pagecounts-raw/${year}/${year}-${month}/md5sums.txt"
   for day in {01..01}
   do
-    for hour in {00..03}
+    for hour in {00..02}
     do
       for i in {00..20}
         do

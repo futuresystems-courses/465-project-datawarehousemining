@@ -2,6 +2,7 @@
 #commands used to Chef installation and configuration required for deploying Hadoop
 
 VAR1=$1
+sudo su -
 apt-get update
 cd /home/ubuntu
 curl -L https://www.opscode.com/chef/install.sh | bash

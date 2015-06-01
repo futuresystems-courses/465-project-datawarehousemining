@@ -96,11 +96,11 @@ class command_wikicount(object):
             hadoop_ip = content_file.read()
         with open('ansible/hadoop_hostname.txt', 'r') as content_file:
             hadoop_hostname= content_file.read()
-        hadoop_command_line="ssh ubuntu@" + hadoop_ip + " bash -s < Hadoop/Hadoop_Deployment_Automation.sh " + hadoop_hostname
+        hadoop_command_line="ssh ubuntu@" + hadoop_ip + """ -o "StrictHostKeyChecking no" bash -s < Hadoop/Hadoop_Deployment_Automation.sh """ + hadoop_hostname
         print(hadoop_command_line)
         os.system(hadoop_command_line)
         print("running map reduce test case")
-        hadoop_command_line="ssh ubuntu@" + hadoop_ip + " bash -s < Hadoop/Wiki_Data_Analysis_Automation.sh"
+        hadoop_command_line="ssh ubuntu@" + hadoop_ip + """ -o "StrictHostKeyChecking no" sudo bash -s < Hadoop/Wiki_Data_Analysis_Automation.sh"""
         os.system(hadoop_command_line)
         return 1
 
@@ -109,7 +109,7 @@ class command_wikicount(object):
         subprocess.call("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/mongodb.yaml", shell=True)
         with open('ansible/hadoop-ip.txt', 'r') as content_file:
             hadoop_ip = content_file.read()
-        hadoop_command_line="ssh ubuntu@" + hadoop_ip + " bash -s < bin/import_wiki_pagecounts_May2014_1.sh"
+        hadoop_command_line="ssh ubuntu@" + hadoop_ip + """ -o "StrictHostKeyChecking no" bash -s < bin/import_wiki_pagecounts_May2014_1.sh"""
         os.system(hadoop_command_line)
         return 1
 

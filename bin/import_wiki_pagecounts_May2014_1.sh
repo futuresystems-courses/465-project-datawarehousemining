@@ -7,9 +7,9 @@ year="2014"
 month="05"
   echo "importing hash file for ${year} - ${month} used for checking files arrive intact"
   wget -O $year$month-hash.txt "https://dumps.wikimedia.org/other/pagecounts-raw/${year}/${year}-${month}/md5sums.txt"
-  for day in {01..31}
+  for day in {01..01}
   do
-    for hour in {00..23}
+    for hour in {00..03}
     do
       for i in {00..20}
         do
@@ -23,7 +23,7 @@ month="05"
             echo "convert to UTF-8"
             iconv -f ISO-8859-1 -t UTF-8 $year$month$day-$hour.csv >$year$month$day-$hour-UT8.csv
             echo "importing data into mongodb"
-            mongoimport --db wikimedia_project --collection pagecounts_May14 --type csv --fieldFile pagecount_headers.txt --file $year$month$day-$hour-UT8.csv
+            mongoimport --db wikimedia_project --collection pagecounts_small_May14 --type csv --fieldFile pagecount_headers.txt --file $year$month$day-$hour-UT8.csv
             echo "cleaning up files"
             rm $year$month$day-$hour*
             break

@@ -8,29 +8,42 @@
     apt_repository: repo='deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' state=present
   - name: install mongodb
     apt: pkg=mongodb-org state=latest update_cache=yes
+    notify:
+    - start mongodb
+  handlers:
+    - name: start mongodb
+      service: name=mongod state=started
 
-- hosts: config-servers
-  remote_user: root
+- hosts: hadoop
   tasks:
-  - name: Creates directory for config server
-    file: path=/data/configdb state=directory
-  - name: start mongodb config servers
-    service: name=mongod arguments="--configsvr --dbpath /data/configdb --port 27019" state=started
+  - name: Move import script over to remote sample deployment instance
+    copy: src=../pagecount_headers.txt dest=/home/ubuntu
+
+#  Attempting to setup mongo sharding accross the cluster.  Could not get it to work
+#
+#- hosts: config-servers
+#  remote_user: root
+#  tasks:
+#  - name: Creates directory for config server
+#    file: path=/data/configdb state=directory
+#  - name: start mongodb config servers
+#    service: name=mongod arguments="--configsvr --dbpath /data/configdb --port 27019" state=started
 #  - name: start config servers
 #    shell: sudo mongod --configsvr --dbpath /data/configdb --port 27019 &
 #    async: 30
 #    poll: 0
 
-- hosts: ansible-wikicount
-  remote_user: root
-  tasks:
-  - name: copy hostnames.txt over to remote VMs
-    copy: src= hostnames.txt dest=/home/ubuntu/hostnames.txt owner=ubuntu
-  - name: test variable replacement
-    shell: echo "$(< hostnames.txt)"
-  - name: Starts mongo instances on all nodes in the cluster
-    shell: mongos --configdb ~/"$(< /home/ubuntu/hostnames.txt)"
-
+# start instances
+#- hosts: ansible-wikicount
+#  remote_user: root
+#  tasks:
+#  - name: copy hostnames.txt over to remote VMs
+#    copy: src= hostnames.txt dest=/home/ubuntu/hostnames.txt owner=ubuntu
+#  - name: test variable replacement
+#    shell: echo "$(< hostnames.txt)"
+#  - name: Starts mongo instances on all nodes in the cluster
+#    shell: mongos --configdb ~/"$(< /home/ubuntu/hostnames.txt)"
+#
 #    notify:
 #    - start mongodb
 #  handlers:

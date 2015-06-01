@@ -1,0 +1,53 @@
+---
+- hosts: hadoop
+  remote_user: root
+  tasks:
+  - name: copy files to remote host
+    copy: src=../Hadoop/ dest=/home/ubuntu/Hadoop
+  - name: run hadoop deployment script on remote host
+    script: ../Hadoop/Hadoop_Deployment_Automation.sh {{ ansible_hostname }}
+   
+
+#  - name: test
+#    shell: echo {{ ansible_hostname }} > /home/ubuntu/test.txt
+#  - name: apt-get update
+#    apt: update_cache=yes
+#  - name: get chef
+#    get_url: url=https://www.opscode.com/chef/install.sh dest=/home/ubuntu/ mode=755
+#  - name: install chef
+#    command: /home/ubuntu/install.sh
+#  - name: get master tarball from chef-repo
+#    get_url: url=http://github.com/opscode/chef-repo/tarball/master dest=/home/ubuntu/
+#  - name: unzip tarball
+#    unarchive: src=/home/ubuntu/chef-chef-repo-605eeda.tar.gz dest=/home/ubuntu/chef-repo/
+#  - name: remove master
+#    shell: rm master
+#  - name: Create .chef direcotry
+#    file: path=/home/ubuntu/chef-repo/.chef state=directory
+
+#VAR1=$1
+#apt-get update
+#cd /home/ubuntu
+#curl -L https://www.opscode.com/chef/install.sh | bash
+#wget http://github.com/opscode/chef-repo/tarball/master
+#tar -zxf master
+#mv *-chef-repo* chef-repo
+#rm master
+#cd chef-repo/
+#mkdir .chef
+#echo "cookbook_path [ '/home/ubuntu/chef-repo/cookbooks' ]" > .chef/knife.rb
+#cd cookbooks
+#knife cookbook site download java
+#knife cookbook site download apt
+#knife cookbook site download yum
+#knife cookbook site download hadoop
+#knife cookbook site download ohai
+#knife cookbook site download sysctl
+#tar -zxf java*
+#tar -zxf apt*
+#tar -zxf yum*
+#tar -zxf hadoop*
+#tar -zxf sysctl*
+#tar -zxf ohai*
+#rm *.tar.gz
+

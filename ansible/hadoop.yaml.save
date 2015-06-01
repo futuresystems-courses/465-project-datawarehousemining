@@ -1,0 +1,35 @@
+---
+- hosts: hadoop
+  remote_user:  vars:
+     hadoop-hostname: "{{ lookup('file', '/ansible/hadoop-hostname.txt') }}"  
+  tasks:
+  - name: test
+    shell: echo {{ ansible_hostname }} > test.txt
+    
+
+#VAR1=$1
+#apt-get update
+#cd /home/ubuntu
+#curl -L https://www.opscode.com/chef/install.sh | bash
+#wget http://github.com/opscode/chef-repo/tarball/master
+#tar -zxf master
+#mv *-chef-repo* chef-repo
+#rm master
+#cd chef-repo/
+#mkdir .chef
+#echo "cookbook_path [ '/home/ubuntu/chef-repo/cookbooks' ]" > .chef/knife.rb
+#cd cookbooks
+#knife cookbook site download java
+#knife cookbook site download apt
+#knife cookbook site download yum
+#knife cookbook site download hadoop
+#knife cookbook site download ohai
+#knife cookbook site download sysctl
+#tar -zxf java*
+#tar -zxf apt*
+#tar -zxf yum*
+#tar -zxf hadoop*
+#tar -zxf sysctl*
+#tar -zxf ohai*
+#rm *.tar.gz
+

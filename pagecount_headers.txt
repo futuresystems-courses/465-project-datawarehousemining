@@ -1,0 +1,8 @@
+year
+month
+day
+hour
+domain
+page_title
+count_views
+total_response_size

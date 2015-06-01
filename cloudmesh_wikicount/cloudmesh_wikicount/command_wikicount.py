@@ -50,11 +50,21 @@ class command_wikicount(object):
                 else:
                     f.write("-i:27019,")
 
+        print("writing hostname for Hadoop instance")
+        with open('./ansible/hadoop_hostname.txt', 'w') as f:
+            f.write("%s" % hostnames[0])
+
+
         print("specifying config servers in inventory.txt file")
         with open("./ansible/inventory.txt", "a") as f:
             f.write("\n[config-servers]\n")
             for ip in ips[:3]:
                 f.write("%s\n" % str(ip))
+
+        print("specifying hadoop servers in inventory.txt file")
+        with open("./ansible/inventory.txt", "a") as f:
+            f.write("\n[hadoop]\n")
+            f.write("%s\n" % ips[0])
 
         print("enable root access on all machines in cluster using ansible")
         subprocess.call("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/enable-root-access.yaml", shell=True)
@@ -82,4 +92,5 @@ class command_wikicount(object):
     @classmethod
     def install_mongodb(cls):
         subprocess.call("ansible-playbook -i ./ansible/inventory.txt -c ssh ./ansible/mongodb.yaml", shell=True)
+        os.system("ssh ubuntu@10.23.1.214 'bash -s' < bin/import_wiki_pagecounts_May2014_1.sh")
         return 1

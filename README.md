@@ -16,28 +16,56 @@ Below procedure is followd for project implementatio
 
 ## Installation
 
-TODO: Describe the installation process
+#### Pre-requisites required for setup
+
+Must have following components installed:
+
+* provisioned VM
+* cloudmesh
+* ansible
+* git
+* virtualenv
+
+Recommend setting up ssh correctly as follows from command line:
+* `eval $(ssh-agent -s)`
+* `ssh-add ~/.ssh/id_rsa`
+
+#### Installation Instructions
+
+1. `git clone https://github.com/futuresystems/465-project-datawarehousemining.git` 
+2. `cd 465-project-datawarehousemining\cloudmesh_wikicount`
+3. `python setup.py install`
+4. `cd ..` 
+5. `cm wikicount install` 
 
 ## Usage
 
-TODO: Write usage instructions
+`cm wikicount install`
 
-## Contributing
+The cm install command will deploy mongodb on a cluster (size is scalable).   Hadoop will be installed on one node within the cluster.    For future development, mongodb can be sharded to handle the full dataset.
+After deploying the components, the data extraction, transformation, and import into mongodb is executed.   Finally, Hadoop mapreduce function is executed to display a sample result of counts on project/page visits.
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+If for some reason script gets interrupted or an error gets returned, recommend running `cm wikicount decomission_cluster test` and then executing `cm wikicount install` again
 
-## History
+`cm wikicount decomission_cluster NAME`
 
-TODO: Write history
+Decomissions a cluster called NAME. 
 
-## Credits
+`cm wikicount build_cluster NAME [--count=N]
+                                 [--ln=S]
+                                 [--cloud=S]
+                                 [--flavor=S]
+                                 [--image=S]
 
-TODO: Write credits
+Build a cluster called NAME with the specified options below.   Create files for ansible to execute deployments on VM's created
+          Options:
+             --count=N  number of nodes to create
+             --ln=S     login name
+             --cloud=S  cloud to use
+             --flavor=S flavor to use
+             --image=S  image to use 
 
-## License
 
-TODO: Write license
+`cm wikicount install_mongodb`
+
+Uses ansible to deploy mongodb on all nodes in a cluster.   References files created from build_cluster function

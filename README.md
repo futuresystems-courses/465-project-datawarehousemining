@@ -51,7 +51,7 @@ If for some reason script gets interrupted or an error gets returned, recommend 
 
 Decomissions a cluster called NAME. 
 
-`cm wikicount build_cluster NAME [--count=N]
+`cm wikicount build_cluster NAME` [--count=N]
                                  [--ln=S]
                                  [--cloud=S]
                                  [--flavor=S]

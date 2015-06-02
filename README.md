@@ -43,7 +43,7 @@ Recommend setting up ssh correctly as follows from command line:
 `cm wikicount install`
 
 The cm install command will deploy mongodb on a cluster (size is scalable).   Hadoop will be installed on one node within the cluster.    For future development, mongodb can be sharded to handle the full dataset.
-After deploying the components, the data extraction, transformation, and import into mongodb is executed.   Finally, Hadoop mapreduce function is executed to display a sample result of counts on project/page visits.
+After deploying the components, the data extraction, transformation, and import into mongodb is executed on a small subset of the data.   Finally, Hadoop mapreduce function is executed to display a sample result of counts on project/page visits.
 
 If for some reason script gets interrupted or an error gets returned, recommend running `cm wikicount decomission_cluster test` and then executing `cm wikicount install` again
 

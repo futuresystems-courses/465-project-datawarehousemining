@@ -51,11 +51,12 @@ If for some reason script gets interrupted or an error gets returned, recommend 
 
 Decomissions a cluster called NAME. 
 
-`cm wikicount build_cluster NAME` [--count=N]
-                                 [--ln=S]
-                                 [--cloud=S]
-                                 [--flavor=S]
-                                 [--image=S]
+`cm wikicount build_cluster NAME` 
+* [--count=N]
+* [--ln=S]
+* [--cloud=S]
+* [--flavor=S]
+* [--image=S]
 
 Build a cluster called NAME with the specified options below.   Create files for ansible to execute deployments on VM's created
           Options:

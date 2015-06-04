@@ -72,11 +72,15 @@ Build a cluster called NAME with the specified options below.   Create files for
 Uses ansible to deploy mongodb on all nodes in a cluster.   References files created from build_cluster function
 
 
+Below scripts will be called internally via cm wikicount install
 
-Loading Data into MongoDB using import_wiki_pagecounts_May2014_1.sh on one node
-Hadoop Deployment on single node cluster using Hadoop_Deployment_Automation.sh “instance name”  
-Map reduce java program- WikiDataAnalysis.java  that will analyse the data using key and value pairs
-Execute java file using Wiki_Data_Analysis_Automation.sh 
-(Prerequisite: Availability of mongodb = wikimedia_project  with collection = pagecounts_small_May14)
+	Loading Data into MongoDB using import_wiki_pagecounts_May2014_1.sh on one node
+
+	Hadoop Deployment on single node cluster using Hadoop_Deployment_Automation.sh “instance name”  
+
+	Map reduce java program- WikiDataAnalysis.java  that will analyse the data using key and value pairs
+
+	Execute java file using Wiki_Data_Analysis_Automation.sh 
+	(Prerequisite: Availability of mongodb = wikimedia_project  with collection = pagecounts_small_May14)
 
 
